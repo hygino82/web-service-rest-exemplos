@@ -1,0 +1,18 @@
+meta {
+  name: Inserir Cidade Objeto
+  type: http
+  seq: 2
+}
+
+put {
+  url: http://localhost:8080//RestProvider/resources/rest/cidadeobj
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "id": 1,
+    "name": "Coronel Vivida"
+  }
+}
