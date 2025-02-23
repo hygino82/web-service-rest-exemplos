@@ -1,5 +1,6 @@
 package br.dev.hygino.jakarta.repository;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -12,10 +13,10 @@ public class ProductRepository {
     private static List<Product> products;
 
     public ProductRepository() {
-        products = Arrays.asList(
+        products = new ArrayList<>(Arrays.asList(
                 new Product(1, "Radio", 45.6),
                 new Product(2, "TV", 900.45),
-                new Product(3, "Ventilador", 124.95));
+                new Product(3, "Ventilador", 124.95)));
     }
 
     public List<Product> getProducts() {
@@ -46,6 +47,7 @@ public class ProductRepository {
                 .filter(x -> x.getId() == id)
                 .findFirst()
                 .orElseThrow(() -> new IllegalArgumentException("Não existe produto com o id: " + id));
+                
         res.setName(dto.getName());
         res.setPrice(dto.getPrice());
         return res;
