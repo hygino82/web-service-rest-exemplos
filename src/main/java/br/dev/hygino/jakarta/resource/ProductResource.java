@@ -6,6 +6,7 @@ import br.dev.hygino.jakarta.dto.RequestProductDTO;
 import br.dev.hygino.jakarta.model.Product;
 import br.dev.hygino.jakarta.repository.ProductRepository;
 import jakarta.inject.Inject;
+import jakarta.json.JsonObject;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.DELETE;
 import jakarta.ws.rs.GET;
@@ -25,6 +26,16 @@ public class ProductResource {
         this.repository = repository;
     }
 
+    @POST
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Product insert(JsonObject jsonData) {
+        RequestProductDTO dto = new RequestProductDTO();
+        dto.setName(jsonData.getString("name"));
+        dto.setPrice(jsonData.getJsonNumber("price").doubleValue());
+        return repository.insert(dto);
+    }
+
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public List<Product> getAllProducts() {
@@ -32,26 +43,22 @@ public class ProductResource {
         return repository.getProducts();
     }
 
+    @PUT
+    @Path("/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Product update(@PathParam("id") int id, JsonObject jsonData) {
+        RequestProductDTO dto = new RequestProductDTO();
+        dto.setName(jsonData.getString("name"));
+        dto.setPrice(jsonData.getJsonNumber("price").doubleValue());
+        return repository.update(id, dto);
+    }
+
     @GET
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public Product getProduct(@PathParam("id") int id) {
         return repository.findById(id);
-    }
-
-    @POST
-    @Produces(MediaType.APPLICATION_JSON)
-    @Consumes(MediaType.APPLICATION_JSON)
-    public Product insert(RequestProductDTO dto) {
-        return repository.insert(dto);
-    }
-
-    @PUT
-    @Path("/{id}")
-    @Produces(MediaType.APPLICATION_JSON)
-    @Consumes(MediaType.APPLICATION_JSON)
-    public Product update(@PathParam("id") int id, RequestProductDTO dto) {
-        return repository.update(id, dto);
     }
 
     @DELETE

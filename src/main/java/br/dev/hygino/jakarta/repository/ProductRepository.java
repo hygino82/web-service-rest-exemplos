@@ -24,7 +24,7 @@ public class ProductRepository {
     }
 
     public Product insert(RequestProductDTO dto) {
-        int newId = (int) Math.random() * 1000;
+        int newId = (int) (Math.random() * 1000);
         Product product = new Product();
         product.setId(newId);
         dtoToModel(dto, product);
@@ -47,7 +47,7 @@ public class ProductRepository {
                 .filter(x -> x.getId() == id)
                 .findFirst()
                 .orElseThrow(() -> new IllegalArgumentException("Não existe produto com o id: " + id));
-                
+
         res.setName(dto.getName());
         res.setPrice(dto.getPrice());
         return res;
