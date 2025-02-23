@@ -9,3 +9,7 @@ You can run the application by executing the following command from the director
 
 Once the runtime starts, you can access the project at [http://localhost:8080/jakartaee-rest-example](http://localhost:8080/jakartaee-rest-example).
 
+asadmin stop-domain
+asadmin start-domain
+asadmin deploy "target/jakartaee-rest-example.war"
+asadmin undeploy jakartaee-rest-example
