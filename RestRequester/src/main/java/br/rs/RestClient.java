@@ -7,25 +7,33 @@ import jakarta.ws.rs.ClientErrorException;
 import jakarta.ws.rs.client.Client;
 import jakarta.ws.rs.client.Entity;
 import jakarta.ws.rs.client.WebTarget;
+import jakarta.ws.rs.core.HttpHeaders;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+/**
+ *
+ * @author default
+ */
 public class RestClient {
 
     private WebTarget webTarget;
     private Client client;
     private static final String BASE_URI = "http://localhost:8080/RestProvider/resources/";
+    private String loginSenha;
 
     public RestClient() {
         client = jakarta.ws.rs.client.ClientBuilder.newClient();
         webTarget = client.target(BASE_URI).path("rest");
+        loginSenha = "user1" + ":" + "pass2";
+
     }
 
     public Response ping() throws ClientErrorException {
-        Response resource = webTarget.request().get();
+        Response resource = webTarget.request().header(HttpHeaders.AUTHORIZATION, loginSenha).get();
         return resource;
     }
 
@@ -40,6 +48,7 @@ public class RestClient {
         Response response = webTarget.path("cidade")
                 .path("/" + codigo + "/" + nome)
                 .request()
+                .header(HttpHeaders.AUTHORIZATION, loginSenha)
                 .put(Entity.entity("", MediaType.APPLICATION_JSON));
     }
 
@@ -56,7 +65,7 @@ public class RestClient {
 
     }
 
-//adicionar com objeto cidade
+    //adicionar com objeto cidade
     public void addObj(Cidade cid) throws ClientErrorException {
 
         Response response = webTarget.path("cidadeobj")
@@ -66,7 +75,10 @@ public class RestClient {
 
     //obter cidades
     public ArrayList<Cidade> getCidades() throws ClientErrorException {
-        ArrayList resource = webTarget.path("cidades").request(MediaType.APPLICATION_JSON).get(ArrayList.class);
+        ArrayList resource = webTarget.path("cidades")
+                .request(MediaType.APPLICATION_JSON)
+                //  .header(HttpHeaders.AUTHORIZATION, loginSenha)
+                .get(ArrayList.class);
         //converter Arraylist de hashmap para ArrayList de Cidade
         ArrayList<Cidade> lcid = new ArrayList<Cidade>();
         for (Object object : resource) {
@@ -78,12 +90,14 @@ public class RestClient {
         }
         return lcid;
     }
-    
+
     //obter uma cidade
     public Cidade getCidade(int id) throws ClientErrorException {
         Cidade resource = webTarget.path("cidade")
                 .path("/" + id)
-                .request(MediaType.APPLICATION_JSON).get(Cidade.class);
+                .request(MediaType.APPLICATION_JSON)
+                .header(HttpHeaders.AUTHORIZATION, loginSenha)
+                .get(Cidade.class);
         return resource;
     }
 
