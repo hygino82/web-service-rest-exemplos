@@ -5,14 +5,14 @@ meta {
 }
 
 post {
-  url: http://localhost:8080/jakartaee-rest-example/api/product
+  url: {{host}}/api/product
   body: json
   auth: none
 }
 
 body:json {
   {
-    "name": "Shower",
+    "name": "Chuveiro",
     "price": 42.752
   }
 }

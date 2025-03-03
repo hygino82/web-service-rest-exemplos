@@ -11,5 +11,16 @@ Once the runtime starts, you can access the project at [http://localhost:8080/ja
 
 asadmin stop-domain
 asadmin start-domain
-asadmin deploy "target/jakartaee-rest-example.war"
+asadmin deploy --contextroot web-service-rest-produto "target/jakartaee-rest-example.war"
 asadmin undeploy jakartaee-rest-example
+
+
+Quando você roda a aplicação direto pelo NetBeans (clicando em "Run"), o NetBeans usa o nome do projeto para definir o Context Root.
+Se você fizer deploy pelo asadmin (via comando ou pelo admin console web), o context root pode ser:
+O nome do WAR.
+Ou algum nome personalizado configurado no Payara.
+
+NetBeans (Run)	web-service-rest-produto
+Payara (deploy manual ou admin console)	Pode ser jakartaee-rest-example ou qualquer outro configurado
+
+sdk use java 11.0.25-amzn

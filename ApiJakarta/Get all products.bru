@@ -5,7 +5,11 @@ meta {
 }
 
 get {
-  url: http://localhost:8080/jakartaee-rest-example/api/product
+  url: {{host}}/api/product
   body: none
   auth: none
+}
+
+headers {
+  Authorization: user1:pass2
 }
