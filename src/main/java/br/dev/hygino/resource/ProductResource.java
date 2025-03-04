@@ -26,7 +26,14 @@ public class ProductResource {
         this.repository = repository;
     }
 
-    @POST
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<Product> getAllProducts() {
+        System.out.println("Método getAllProducts() chamado!");
+        return repository.getProducts();
+    }
+    
+   /* @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     public Product insert(JsonObject jsonData) {
@@ -34,13 +41,6 @@ public class ProductResource {
         dto.setName(jsonData.getString("name"));
         dto.setPrice(jsonData.getJsonNumber("price").doubleValue());
         return repository.insert(dto);
-    }
-
-    @GET
-    @Produces(MediaType.APPLICATION_JSON)
-    public List<Product> getAllProducts() {
-        System.out.println("Método getAllProducts() chamado!");
-        return repository.getProducts();
     }
 
     @PUT
@@ -65,5 +65,5 @@ public class ProductResource {
     @Path("/{id}")
     public void delete(@PathParam("id") int id) {
         repository.delete(id);
-    }
+    }*/
 }

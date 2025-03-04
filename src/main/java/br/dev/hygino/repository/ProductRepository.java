@@ -1,16 +1,40 @@
 package br.dev.hygino.repository;
 
-import br.dev.hygino.dto.RequestProductDTO;
-import br.dev.hygino.model.Product;
+
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
+import br.dev.hygino.config.DatabaseConfig;
+import br.dev.hygino.model.Product;
 import jakarta.enterprise.context.ApplicationScoped;
 
 @ApplicationScoped
 public class ProductRepository {
-    private static List<Product> products;
+    
+     public List<Product> getProducts() {
+         System.out.println("Listando produtos");
+        List<Product> products = new ArrayList<>();
+        try (Connection connection = (Connection) DatabaseConfig.getDataSource().getConnection();
+             PreparedStatement stmt = connection.prepareStatement("SELECT * FROM produto");
+             ResultSet rs = stmt.executeQuery()) {
+
+            while (rs.next()) {
+                products.add(new Product(
+                    rs.getInt("id"),
+                    rs.getString("nome"),
+                    rs.getDouble("preco")
+                ));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return products;
+    }
+    /*private static List<Product> products;
 
     public ProductRepository() {
         products = new ArrayList<>(Arrays.asList(
@@ -58,5 +82,5 @@ public class ProductRepository {
                 .filter(x -> x.getId() == id)
                 .findFirst()
                 .orElseThrow(() -> new IllegalArgumentException("Não existe produto com o id: " + id));
-    }
+    }*/
 }
