@@ -61,6 +61,7 @@ public class ProductRepository {
             try (ResultSet generatedKeys = stmt.getGeneratedKeys()) {
                 if (generatedKeys.next()) {
                     int id = generatedKeys.getInt(1);
+                    System.out.println("Id encontrado: " + id);
                     return new Product(id, dto.getName(), dto.getPrice());
                 } else {
                     throw new SQLException("Não foi possível recuperar o ID gerado");
@@ -86,7 +87,7 @@ public class ProductRepository {
             }
         } catch (SQLException e) {
             System.err.println("Erro ao encontrar produto: " + e.getMessage());
-            return null; // ou lança uma exceção se preferir
+            return Optional.empty();
         }
     }
 
