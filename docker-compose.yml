@@ -1,0 +1,12 @@
+version: '3'
+
+services:
+  mysql:
+    image: mysql:latest
+    environment:
+      MYSQL_ROOT_PASSWORD: '89631139'
+      MYSQL_DATABASE: 'testdb'
+      MYSQL_USER: 'hygino'
+      MYSQL_PASSWORD: '89631139'
+    ports:
+      - "3306:3306"
