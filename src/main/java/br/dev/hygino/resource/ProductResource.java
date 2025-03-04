@@ -16,9 +16,12 @@ import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.Response;
+import java.util.Optional;
 
 @Path("product")
 public class ProductResource {
+
     private final ProductRepository repository;
 
     @Inject
@@ -32,15 +35,35 @@ public class ProductResource {
         System.out.println("Método getAllProducts() chamado!");
         return repository.getProducts();
     }
-    
-   /* @POST
+
+    @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Product insert(JsonObject jsonData) {
+    public Response insert(JsonObject jsonData) {
         RequestProductDTO dto = new RequestProductDTO();
         dto.setName(jsonData.getString("name"));
         dto.setPrice(jsonData.getJsonNumber("price").doubleValue());
-        return repository.insert(dto);
+        Product product = repository.insert(dto);
+        return Response.status(Response.Status.CREATED).entity(product).build();
+    }
+
+    @GET
+    @Path("/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getProduct(@PathParam("id") int id) {
+        Optional<Product> res = repository.findById(id);
+
+        if (res.isPresent()) {
+            return Response.status(Response.Status.OK).entity(res.get()).build();
+        } else {
+            return Response.status(Response.Status.NOT_FOUND).entity("Produto não encontrado").build();
+        }
+    }
+
+    @DELETE
+    @Path("/{id}")
+    public void delete(@PathParam("id") int id) {
+        repository.delete(id);
     }
 
     @PUT
@@ -53,17 +76,4 @@ public class ProductResource {
         dto.setPrice(jsonData.getJsonNumber("price").doubleValue());
         return repository.update(id, dto);
     }
-
-    @GET
-    @Path("/{id}")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Product getProduct(@PathParam("id") int id) {
-        return repository.findById(id);
-    }
-
-    @DELETE
-    @Path("/{id}")
-    public void delete(@PathParam("id") int id) {
-        repository.delete(id);
-    }*/
 }
